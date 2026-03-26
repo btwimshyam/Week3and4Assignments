@@ -1,86 +1,37 @@
-import java.util.*;
+class Client {
+    String name;
+    int riskScore;
 
-class Transaction {
-    String id;
-    double fee;
-    String timestamp;
-
-    Transaction(String id, double fee, String timestamp) {
-        this.id = id;
-        this.fee = fee;
-        this.timestamp = timestamp;
+    Client(String n, int r) {
+        name = n;
+        riskScore = r;
     }
 }
 
 public class Assignments2 {
 
-    static void bubbleSort(ArrayList<Transaction> list) {
-        int n = list.size();
-        for (int i = 0; i < n - 1; i++) {
-            boolean swapped = false;
-            for (int j = 0; j < n - i - 1; j++) {
-                if (list.get(j).fee > list.get(j + 1).fee) {
-                    Collections.swap(list, j, j + 1);
-                    swapped = true;
+    static void bubbleSort(Client[] arr) {
+        for (int i = 0; i < arr.length - 1; i++) {
+            for (int j = 0; j < arr.length - i - 1; j++) {
+                if (arr[j].riskScore > arr[j + 1].riskScore) {
+                    Client temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
                 }
             }
-            if (!swapped) break;
         }
     }
 
-    static void insertionSort(ArrayList<Transaction> list) {
-        for (int i = 1; i < list.size(); i++) {
-            Transaction key = list.get(i);
-            int j = i - 1;
-
-            while (j >= 0 &&
-                    (list.get(j).fee > key.fee ||
-                            (list.get(j).fee == key.fee &&
-                                    list.get(j).timestamp.compareTo(key.timestamp) > 0))) {
-                list.set(j + 1, list.get(j));
-                j--;
-            }
-            list.set(j + 1, key);
-        }
-    }
-
-    static void findOutliers(ArrayList<Transaction> list) {
-        for (Transaction t : list) {
-            if (t.fee > 50)
-                System.out.println("Outlier: " + t.id);
-        }
-    }
-
-    // ✅ MAIN METHOD (IMPORTANT)
     public static void main(String[] args) {
+        Client[] arr = {
+                new Client("A", 20),
+                new Client("B", 50),
+                new Client("C", 80)
+        };
 
-        ArrayList<Transaction> list = new ArrayList<>();
+        bubbleSort(arr);
 
-        // Sample data
-        list.add(new Transaction("id1", 10.5, "10:00"));
-        list.add(new Transaction("id2", 25.0, "09:30"));
-        list.add(new Transaction("id3", 5.0, "10:15"));
-
-        System.out.println("Before Sorting:");
-        for (Transaction t : list)
-            System.out.println(t.id + " " + t.fee);
-
-        // Bubble Sort
-        bubbleSort(list);
-
-        System.out.println("\nAfter Bubble Sort:");
-        for (Transaction t : list)
-            System.out.println(t.id + " " + t.fee);
-
-        // Insertion Sort
-        insertionSort(list);
-
-        System.out.println("\nAfter Insertion Sort:");
-        for (Transaction t : list)
-            System.out.println(t.id + " " + t.fee + " " + t.timestamp);
-
-        // Outliers
-        System.out.println("\nOutliers:");
-        findOutliers(list);
+        for (Client c : arr)
+            System.out.println(c.name + " " + c.riskScore);
     }
 }
